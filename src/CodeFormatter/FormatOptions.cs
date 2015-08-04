@@ -57,7 +57,12 @@ namespace CodeFormatter
         public bool Verbose { get; set; }
 
         [Option(
-            "definedotnetformatter", 
+            "import-settings",
+            HelpText = "Specifies file containing analyzer settings to drive reformatting.")]
+        public string ImportedSettingsFile { get; set; }
+
+        [Option(
+            "define-dotnet_formatter", 
             HelpText = "Define DOTNET_FORMATTER in order to allow #if !DOTNET_FORMATTER constructs in code (to opt out of reformatting).")]
         public bool DefineDotNetFormatter { get; set; }
         

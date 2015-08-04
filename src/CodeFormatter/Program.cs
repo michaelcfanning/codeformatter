@@ -111,6 +111,7 @@ namespace CodeFormatter
             configBuilder.Add(options.PreprocessorConfigurations.ToArray());            
             engine.PreprocessorConfigurations = configBuilder.ToImmutableArray();
 
+            engine.ImportedSettingsFile = options.ImportedSettingsFile;
             engine.FileNames = options.Files.ToImmutableArray();
             engine.CopyrightHeader = ImmutableArray.ToImmutableArray<string>(new string[] { options.CopyrightHeader });
             engine.AllowTables = options.DefineDotNetFormatter;

@@ -26,6 +26,7 @@ namespace Microsoft.DotNet.CodeFormatting
         internal const string TablePreprocessorSymbolName = "DOTNET_FORMATTER";
 
         private readonly Options _options;
+        private readonly AnalyzerOptions _analyzerOptions; 
         private readonly IEnumerable<IFormattingFilter> _filters;
         private readonly IEnumerable<DiagnosticAnalyzer> _analyzers;
         private readonly IEnumerable<CodeFixProvider> _fixers;
@@ -36,8 +37,9 @@ namespace Microsoft.DotNet.CodeFormatting
         private readonly Dictionary<string, bool> _ruleEnabledMap = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, bool> _diagnosticEnabledMap;
         private readonly ImmutableDictionary<string, CodeFixProvider> _diagnosticIdToFixerMap;
-        private bool _allowTables;
         private bool _verbose;
+        private bool _allowTables;
+        private string _importedSettingsFile;
 
         public ImmutableArray<string> CopyrightHeader
         {
@@ -75,6 +77,12 @@ namespace Microsoft.DotNet.CodeFormatting
             set { _verbose = value; }
         }
 
+        public string ImportedSettingsFile
+        {
+            get { return _importedSettingsFile; }
+            set { _importedSettingsFile = value; }
+        }
+
         public ImmutableArray<IRuleMetadata> AllRules
         {
             get
@@ -108,7 +116,7 @@ namespace Microsoft.DotNet.CodeFormatting
             _fixers = fixers;
             _syntaxRules = syntaxRules;
             _localSemanticRules = localSemanticRules;
-            _globalSemanticRules = globalSemanticRules;
+            _globalSemanticRules = globalSemanticRules;            
 
             foreach (var rule in AllRules)
             {
@@ -320,8 +328,16 @@ namespace Microsoft.DotNet.CodeFormatting
 
         private async Task<ImmutableArray<Diagnostic>> GetDiagnostics(Project project, CancellationToken cancellationToken)
         {
+            AnalyzerOptions analyzerOptions = null;
+
+            if (!String.IsNullOrEmpty(_importedSettingsFile))
+            {
+                var additionalTextFile = new AdditionalTextFile(_importedSettingsFile);
+                analyzerOptions = new AnalyzerOptions(ImmutableArray.Create<AdditionalText>(additionalTextFile));
+            }
+
             var compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
-            var compilationWithAnalyzers = compilation.WithAnalyzers(_analyzers.ToImmutableArray());
+            var compilationWithAnalyzers = compilation.WithAnalyzers(_analyzers.ToImmutableArray(), analyzerOptions);
             return await compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync().ConfigureAwait(false);
         }
 

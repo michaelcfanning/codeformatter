@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdditionalTextFile.cs" />
     <Compile Include="FormattingEngineDiagnosticProvider.cs" />
     <Compile Include="IRuleMetadata.cs" />
     <Compile Include="NameHelper.cs" />
