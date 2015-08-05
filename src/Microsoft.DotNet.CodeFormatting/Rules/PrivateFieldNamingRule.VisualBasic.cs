@@ -4,9 +4,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 namespace Microsoft.DotNet.CodeFormatting.Rules
 {
@@ -28,7 +25,7 @@ namespace Microsoft.DotNet.CodeFormatting.Rules
 
         private sealed class VisualBasicPrivateFieldAnnotationRewriter : VisualBasicSyntaxRewriter
         {
-            private int _count;
+            private readonly int _count;
             private bool _inModule;
 
             internal static SyntaxNode AddAnnotations(SyntaxNode node, out int count)
