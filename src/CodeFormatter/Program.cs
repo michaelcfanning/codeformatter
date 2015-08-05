@@ -27,13 +27,12 @@ namespace CodeFormatter
                                         };
 
         private static int Main(string[] args)
-        {            
+        {
             return Parser.Default.ParseArguments<ListOptions, FormatOptions>(args)
               .Return(
                 (ListOptions listOptions) => RunListCommand(listOptions),
                 (FormatOptions formatOptions) => RunFormatCommand(formatOptions),
                 errs => 1);
-
         }
 
         private static int RunListCommand(ListOptions options)
@@ -108,7 +107,7 @@ namespace CodeFormatter
             var engine = FormattingEngine.Create(s_defaultCompositionAssemblies);
 
             var configBuilder = ImmutableArray.CreateBuilder<string[]>();
-            configBuilder.Add(options.PreprocessorConfigurations.ToArray());            
+            configBuilder.Add(options.PreprocessorConfigurations.ToArray());
             engine.PreprocessorConfigurations = configBuilder.ToImmutableArray();
 
             engine.FileNames = options.Files.ToImmutableArray();

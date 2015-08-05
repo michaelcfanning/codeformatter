@@ -3,7 +3,6 @@
 
 using System.IO;
 
-using Microsoft.CodeAnalysis;
 
 namespace Microsoft.DotNet.CodeFormatting.Filters
 {
