@@ -3,7 +3,6 @@
 
 using System;
 
-using Microsoft.CodeAnalysis;
 
 namespace Microsoft.DotNet.CodeFormatting.Rules
 {
