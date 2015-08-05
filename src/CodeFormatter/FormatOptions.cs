@@ -12,55 +12,55 @@ namespace CodeFormatter
     public class FormatOptions
     {
         [Option(
-            't', "target", 
-            HelpText = "Project, solution or response file to drive code formatting.", 
+            't', "target",
+            HelpText = "Project, solution or response file to drive code formatting.",
             Required = true)]
         public IEnumerable<string> FormatTargets { get; set; }
-   
+
         [Option(
-            "fileFilter", 
-            HelpText = "Only apply changes to files with specified name(s).", 
+            "fileFilter",
+            HelpText = "Only apply changes to files with specified name(s).",
             Separator = ',')]
         public IEnumerable<string> Files { get; set; }
 
         [Option(
-            'l', "lang", 
+            'l', "lang",
             HelpText = "Specifies the language to use when a response file is specified, e.g., 'C#', 'Visual Basic', ... (default: 'C#').")]
         public string Language { get; set; }
 
         [Option(
-            'c', "config", 
-            HelpText = "Comma-separated list of preprocessor configurations the formatter should run under.", 
+            'c', "config",
+            HelpText = "Comma-separated list of preprocessor configurations the formatter should run under.",
             Separator = ',')]
         public IEnumerable<string> PreprocessorConfigurations { get; set; }
 
         [Option(
-            "copyright", 
+            "copyright",
             HelpText = "Specifies file containing copyright header.")]
-        public string CopyrightHeader { get; set;  }
+        public string CopyrightHeader { get; set; }
 
         [Option(
-            "enable", 
-            HelpText = "Comma-separated list of rules to enable", 
+            "enable",
+            HelpText = "Comma-separated list of rules to enable",
             Separator = ',')]
         public IEnumerable<string> EnabledRules { get; set; }
 
         [Option(
-            "disable", 
-            HelpText = "Comma-separated list of rules to disable", 
+            "disable",
+            HelpText = "Comma-separated list of rules to disable",
             Separator = ',')]
         public IEnumerable<string> DisabledRules { get; set; }
 
         [Option(
-            'v', "verbose", 
+            'v', "verbose",
             HelpText = "Verbose output.")]
         public bool Verbose { get; set; }
 
         [Option(
-            "definedotnetformatter", 
+            "definedotnetformatter",
             HelpText = "Define DOTNET_FORMATTER in order to allow #if !DOTNET_FORMATTER constructs in code (to opt out of reformatting).")]
         public bool DefineDotNetFormatter { get; set; }
-        
+
         [Option(
             "useanalyzers",
             HelpText = "TEMPORARY: invoke built-in analyzers rather than rules to perform reformatting.")]
