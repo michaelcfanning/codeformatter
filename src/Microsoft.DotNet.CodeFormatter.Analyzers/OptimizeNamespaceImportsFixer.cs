@@ -40,7 +40,7 @@ namespace Microsoft.DotNet.CodeFormatter.Analyzers
         }
 
         private Task<Document> RemoveUsingStatement(Document document, SyntaxNode root, IEnumerable<SyntaxNode> usingDirectiveNodes)
-        {     
+        {
             return Task.FromResult(
                 document.WithSyntaxRoot(root.RemoveNodes(usingDirectiveNodes, SyntaxRemoveOptions.KeepLeadingTrivia)));
         }
