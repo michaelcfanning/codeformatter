@@ -4,8 +4,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic;
 
 namespace Microsoft.DotNet.CodeFormatting.Rules
 {

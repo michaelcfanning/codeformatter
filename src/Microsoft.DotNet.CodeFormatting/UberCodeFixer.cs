@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Microsoft.CodeAnalysis.CodeFixes;
 
 namespace Microsoft.DotNet.CodeFormatting
 {
@@ -14,8 +13,8 @@ namespace Microsoft.DotNet.CodeFormatting
     {
         private class UberCodeFixer : CodeFixProvider
         {
-            private ImmutableDictionary<string, CodeFixProvider> _diagnosticIdToFixerMap;
-            private ImmutableDictionary<string, bool> _diagnosticEnabledMap;
+            private readonly ImmutableDictionary<string, CodeFixProvider> _diagnosticIdToFixerMap;
+            private readonly ImmutableDictionary<string, bool> _diagnosticEnabledMap;
 
             public UberCodeFixer(ImmutableDictionary<string, CodeFixProvider> diagnosticIdToFixerMap, Dictionary<string, bool> diagnosticEnabledMap)
             {
