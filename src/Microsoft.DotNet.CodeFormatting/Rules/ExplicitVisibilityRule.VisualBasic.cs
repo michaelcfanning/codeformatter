@@ -7,9 +7,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 namespace Microsoft.DotNet.CodeFormatting.Rules
 {

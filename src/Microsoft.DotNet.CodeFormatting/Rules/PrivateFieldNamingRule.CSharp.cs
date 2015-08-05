@@ -4,9 +4,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Microsoft.DotNet.CodeFormatting.Rules
 {
@@ -31,7 +28,7 @@ namespace Microsoft.DotNet.CodeFormatting.Rules
         /// </summary>
         internal sealed class CSharpPrivateFieldAnnotationsRewriter : CSharpSyntaxRewriter
         {
-            private int _count;
+            private readonly int _count;
 
             internal static SyntaxNode AddAnnotations(SyntaxNode node, out int count)
             {

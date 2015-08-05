@@ -2,10 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Immutable;
-using System.Composition.Convention;
-using System.Composition.Hosting;
 
-using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Reflection;
 
