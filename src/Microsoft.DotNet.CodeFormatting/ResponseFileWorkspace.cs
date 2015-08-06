@@ -4,15 +4,12 @@
 using System;
 using System.IO;
 using System.Text;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Host.Mef;
-using Microsoft.CodeAnalysis.Text;
 
 namespace Microsoft.DotNet.CodeFormatting
 {
     public sealed class ResponseFileWorkspace : Workspace
     {
-        private static Encoding s_utf8WithoutBom = new UTF8Encoding(false);
+        private static readonly Encoding s_utf8WithoutBom = new UTF8Encoding(false);
 
         private ResponseFileWorkspace()
             : base(DesktopMefHostServices.DefaultServices, "Custom")
