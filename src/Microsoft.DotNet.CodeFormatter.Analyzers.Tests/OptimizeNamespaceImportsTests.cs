@@ -19,8 +19,8 @@ namespace Microsoft.DotNet.CodeFormatter.Analyzers.Tests
         [Fact]
         public void OptimizeNamespaceImports_SimpleRemoveUnusedImports()
         {
-            string input = @"
-using System.Runtime.InteropServices;
+            string input = 
+@"using System.Runtime.InteropServices;
 using AnotherUnreferencedNamespace;
 using System.Threading;
 using System;
@@ -33,11 +33,10 @@ public class Test
     {
         Console.WriteLine(""Calling Console.WriteLine, a dependency on System namespace."");
     }
-}
-";
+}";
 
-            string expected = @"
-using System;
+            string expected = 
+@"using System;
 
 public class Test
 {
@@ -45,8 +44,7 @@ public class Test
     {
         Console.WriteLine(""Calling Console.WriteLine, a dependency on System namespace."");
     }
-}
-";
+}";
             Verify(input, expected, runFormatter: false);
         }
         [Fact]
@@ -82,15 +80,14 @@ public class Test
 using System;
 using System.Xml;
 
-namespace MyNamespace 
+namespace MyNamespace
 {
     public class Test {}
 }";
 
-            string expected = @"
-// Copyright notice
+            string expected = @"// Copyright notice
 
-namespace MyNamespace 
+namespace MyNamespace
 {
     public class Test {}
 }";
@@ -101,23 +98,48 @@ namespace MyNamespace
         [Fact]
         public void OptimizeNamespaceImports_WrappedByComments()
         {
-            string input = @"
-// Preceding comment
+            string input = 
+@"// Preceding comment
 
 using System.Xml;
 // Following comment
 namespace MyNamespace 
 {
-        public class Test {}
+    public class Test {}
 }";
 
-            string expected = @"
-// Preceding comment
+            string expected = 
+@"// Preceding comment
 
 // Following comment
+namespace MyNamespace
+{
+    public class Test {}
+}";
+
+            Verify(input, expected, runFormatter: false);
+        }
+
+        [Fact]
+        public void OptimizeNamespaceImports_MinimizeNewlines()
+        {
+            string input = 
+@"// Test comment
+
+using System.Xml
+using System.IO
+
+namespace MyNamespace
+{
+    public class Test {}
+}";
+
+            string expected = 
+@"// Test comment
+
 namespace MyNamespace 
 {
-        public class Test {}
+    public class Test {}
 }";
 
             Verify(input, expected, runFormatter: false);

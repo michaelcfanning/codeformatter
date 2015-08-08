@@ -5,11 +5,16 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Simplification;
+using Microsoft.DotNet.CodeFormatting;
 
 namespace Microsoft.DotNet.CodeFormatter.Analyzers
 {
@@ -19,30 +24,29 @@ namespace Microsoft.DotNet.CodeFormatter.Analyzers
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
             Diagnostic diagnostic = context.Diagnostics.First();
-            var usingDirectiveNodes = new List<SyntaxNode>();
+            var usingDirectiveNodes = new HashSet<UsingDirectiveSyntax>();
 
             // We recapitulate the primary diagnostic location in the 
             // Diagnostic.AdditionalLocations property on raising
             // the diagnostic, so this member has complete location details.
             foreach (Location location in diagnostic.AdditionalLocations)
             {
-                SyntaxNode usingDirectiveNode = root.FindNode(location.SourceSpan);
-                Debug.Assert(usingDirectiveNode != null);
+                UsingDirectiveSyntax usingDirectiveNode = (UsingDirectiveSyntax)root.FindNode(location.SourceSpan);
                 usingDirectiveNodes.Add(usingDirectiveNode);
             }
 
             context.RegisterCodeFix(
                 CodeAction.Create(
                     Resources.OptimizeNamespaceImportsFixer_Title,
-                    c => RemoveUsingStatement(context.Document, root, usingDirectiveNodes)),
+                    c => RemoveUsingStatement(context.Document, usingDirectiveNodes, semanticModel, root, context.CancellationToken)),
                 diagnostic);
         }
 
-        private Task<Document> RemoveUsingStatement(Document document, SyntaxNode root, IEnumerable<SyntaxNode> usingDirectiveNodes)
-        {     
-            return Task.FromResult(
-                document.WithSyntaxRoot(root.RemoveNodes(usingDirectiveNodes, SyntaxRemoveOptions.KeepLeadingTrivia)));
+        private Task<Document> RemoveUsingStatement(Document document, ISet<UsingDirectiveSyntax> usingDirectiveNodes, SemanticModel semanticModel, SyntaxNode root,  CancellationToken cancellationToken)
+        {
+            return Task<Document>.FromResult(RemoveUnncessaryImportsHelper.RemoveUnnecessaryImports(document, usingDirectiveNodes, semanticModel, root, cancellationToken));
         }
 
         public override FixAllProvider GetFixAllProvider()

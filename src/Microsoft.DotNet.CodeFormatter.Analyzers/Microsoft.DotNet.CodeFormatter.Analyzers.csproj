@@ -70,6 +70,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalyzerIds.cs" />
+    <Compile Include="CSharpRemoveUnnecessaryImportsService.cs" />
+    <Compile Include="CSharpRemoveUnnecessaryImportsService.Rewriter.cs" />
     <Compile Include="NameHelper.cs" />
     <Compile Include="ExplicitThisAnalyzer.cs" />
     <Compile Include="ExplicitThisFixer.cs" />

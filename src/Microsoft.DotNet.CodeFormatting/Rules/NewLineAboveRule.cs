@@ -93,7 +93,7 @@ namespace Microsoft.DotNet.CodeFormatting.Rules
             var list = node.GetLeadingTrivia();
             var searchIndex = 0;
             var newLineTrivia = SyntaxUtil.GetBestNewLineTrivia(node);
-            var prev = node.FindPreviousNodeInParent();
+            var prev = node.GetPreviousSiblingNode();
 
             if (prev == null)
             {

@@ -16,7 +16,7 @@ namespace Microsoft.DotNet.CodeFormatting
         private class FormattingEngineDiagnosticProvider : FixAllContext.DiagnosticProvider
         {
             private readonly Project _project;
-            private List<Diagnostic> _allDiagnostics;
+            private readonly List<Diagnostic> _allDiagnostics;
 
             public FormattingEngineDiagnosticProvider(Project project, IEnumerable<Diagnostic> diagnostics)
             {

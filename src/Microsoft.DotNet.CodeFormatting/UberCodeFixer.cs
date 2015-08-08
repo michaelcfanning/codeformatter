@@ -14,8 +14,8 @@ namespace Microsoft.DotNet.CodeFormatting
     {
         private class UberCodeFixer : CodeFixProvider
         {
-            private ImmutableDictionary<string, CodeFixProvider> _diagnosticIdToFixerMap;
-            private ImmutableDictionary<string, bool> _diagnosticEnabledMap;
+            private readonly ImmutableDictionary<string, CodeFixProvider> _diagnosticIdToFixerMap;
+            private readonly ImmutableDictionary<string, bool> _diagnosticEnabledMap;
 
             public UberCodeFixer(ImmutableDictionary<string, CodeFixProvider> diagnosticIdToFixerMap, Dictionary<string, bool> diagnosticEnabledMap)
             {

@@ -1,17 +1,14 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Linq;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.DotNet.CodeFormatting
 {
-    internal static class SyntaxUtil
+    public static class SyntaxUtil
     {
         /// <summary>
         /// Look at the context of the node to determine the best possible new line trivia.  It will prefer 
@@ -87,7 +84,7 @@ namespace Microsoft.DotNet.CodeFormatting
         /// <summary>
         /// Is this any trivia element which represents a new line 
         /// </summary>
-        internal static bool IsAnyEndOfLine(this SyntaxTrivia trivia)
+        public static bool IsAnyEndOfLine(this SyntaxTrivia trivia)
         {
             return trivia.IsKind(SyntaxKind.EndOfLineTrivia) || trivia.IsDirective;
         }
@@ -96,7 +93,7 @@ namespace Microsoft.DotNet.CodeFormatting
         /// Find the node directly before this in the parent.  Returns null in the case it 
         /// cannot be found.
         /// </summary>
-        internal static SyntaxNode FindPreviousNodeInParent(this SyntaxNode node)
+        public static SyntaxNode GetPreviousSiblingNode(this SyntaxNode node)
         {
             var parent = node.Parent;
             if (parent == null)
@@ -105,6 +102,21 @@ namespace Microsoft.DotNet.CodeFormatting
             }
 
             return parent.ChildNodes().Where(x => x.FullSpan.End == node.FullSpan.Start).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Find the node directly before this in the parent.  Returns null in the case it 
+        /// cannot be found.
+        /// </summary>
+        public static SyntaxNode GetNextSiblingNode(this SyntaxNode node)
+        {
+            var parent = node.Parent;
+            if (parent == null)
+            {
+                return null;
+            }
+
+            return parent.ChildNodes().Where(x => x.FullSpan.Start == node.FullSpan.End).FirstOrDefault();
         }
     }
 }
