@@ -505,6 +505,27 @@ class C
         }
 
         [Fact]
+        public void MarkReadOnlyFieldIncrementFieldWithinUnsafeBlock()
+        {
+            string text = @"
+public class Test
+{
+    private uint _prefixCount;
+    private uint _postfixCount;
+    public void Add(int item)
+    {
+        unchecked
+        {
+            ++_prefixCount;
+            _postfixCount++;
+        }
+    }
+}";
+            Verify(text, text);
+        }
+
+
+        [Fact]
         public void MarkReadOnlyDoNotAnalyzeVisualBasicCode()
         {
             string text = @"
