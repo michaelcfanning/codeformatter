@@ -35,19 +35,45 @@ namespace Microsoft.DotNet.CodeFormatting.Rules
                     return syntaxNode;
                 }
 
-                if (HasCopyrightHeader(syntaxNode))
-                    return syntaxNode;
+                var newHeader = new List<SyntaxTrivia>();
+                foreach (var headerLine in _header)
+                {
+                    newHeader.Add(CreateLineComment(headerLine));
+                    newHeader.Add(CreateNewLine());
+                }
+                newHeader.Add(CreateNewLine());
 
-                return AddCopyrightHeader(syntaxNode);
+                var existingHeader = syntaxNode.GetLeadingTrivia();
+
+                bool exactMatch = true;
+
+                if (newHeader.Count == existingHeader.Count)
+                {
+                    for (int i = 0; i < newHeader.Count; i++)
+                    {
+                        if (newHeader[i].ToString() != existingHeader[i].ToString())
+                        {
+                            exactMatch = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (exactMatch)
+                {
+                    return syntaxNode;
+                }
+
+                return syntaxNode.WithLeadingTrivia(CreateTriviaList(newHeader));
             }
 
             private bool HasCopyrightHeader(SyntaxNode syntaxNode)
             {
                 var existingHeader = GetExistingHeader(syntaxNode.GetLeadingTrivia());
-                return SequnceStartsWith(_header, existingHeader);
+                return SequenceStartsWith(_header, existingHeader);
             }
 
-            private bool SequnceStartsWith(ImmutableArray<string> header, List<string> existingHeader)
+            private bool SequenceStartsWith(ImmutableArray<string> header, List<string> existingHeader)
             {
                 // Only try if the existing header is at least as long as the new copyright header
                 if (existingHeader.Count >= header.Count())
@@ -56,29 +82,6 @@ namespace Microsoft.DotNet.CodeFormatting.Rules
                 }
 
                 return false;
-            }
-
-            private SyntaxNode AddCopyrightHeader(SyntaxNode syntaxNode)
-            {
-                var list = new List<SyntaxTrivia>();
-                foreach (var headerLine in _header)
-                {
-                    list.Add(CreateLineComment(headerLine));
-                    list.Add(CreateNewLine());
-                }
-                list.Add(CreateNewLine());
-
-                var triviaList = RemoveExistingHeader(syntaxNode.GetLeadingTrivia());
-                var i = 0;
-                MovePastBlankLines(triviaList, ref i);
-
-                while (i < triviaList.Count)
-                {
-                    list.Add(triviaList[i]);
-                    i++;
-                }
-
-                return syntaxNode.WithLeadingTrivia(CreateTriviaList(list));
             }
 
             private List<string> GetExistingHeader(SyntaxTriviaList triviaList)
